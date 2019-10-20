@@ -14,6 +14,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(PerformanceTestRunner.class)
 public class LIFOQueueImplTest {
 
+    /* if the performance test does not pass and you are sure you fixed the problem, please rerun */
     @PerformanceTest(runningTimeLimit = 1000)
     public void runEfficiencyTest() throws Exception {
         LIFOQueue<Integer> lifo = new LIFOQueueImpl<>();
