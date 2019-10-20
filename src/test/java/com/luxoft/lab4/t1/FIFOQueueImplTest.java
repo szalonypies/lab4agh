@@ -1,7 +1,7 @@
 package com.luxoft.lab4.t1;
 
-import com.luxoft.lab4.experimental.PerformanceTest;
-import com.luxoft.lab4.experimental.PerformanceTestRunner;
+import com.luxoft.lab4.util.PerformanceTest;
+import com.luxoft.lab4.util.PerformanceTestRunner;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;

@@ -1,4 +1,4 @@
-package com.luxoft.lab4.experimental;
+package com.luxoft.lab4.util;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
