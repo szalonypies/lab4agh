@@ -1,6 +1,6 @@
 package com.luxoft.lab4.t1;
 
-import com.luxoft.lab4.experimental.MemEfficiencyRunner;
+import com.luxoft.lab4.experimental.PerformanceTestRunner;
 import com.luxoft.lab4.utils.EfficiencyTestUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * TODO Please implement the LIFOQueueImpl using any java collection as a composite, for good time efficiency.
  */
-@RunWith(MemEfficiencyRunner.class)
+@RunWith(PerformanceTestRunner.class)
 public class LIFOQueueImplTest extends EfficiencyTestUtil {
 
     @Test

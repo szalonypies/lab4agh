@@ -14,7 +14,6 @@ import org.junit.runner.notification.RunNotifier;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
@@ -23,14 +22,14 @@ import java.util.stream.Collectors;
  * Created by aniamamam on 2014-04-24.
  */
 
-public class MemEfficiencyRunner extends Runner implements Filterable {
+public class PerformanceTestRunner extends Runner implements Filterable {
     private final Class<?> testClass;
     private Description testSuiteDescription;
     private ArrayList<Filter> filters = new ArrayList<>();
     private boolean initialized = false;
 
     class TestInfo {
-        EfficiencyTest et;
+        PerformanceTest et;
         boolean ignore = false;
         Description description;
 
@@ -38,12 +37,12 @@ public class MemEfficiencyRunner extends Runner implements Filterable {
 
     List<TestInfo> testParameters = new ArrayList<>();
 
-    public MemEfficiencyRunner(Class<?> testClass) {
+    public PerformanceTestRunner(Class<?> testClass) {
         super();
         testSuiteDescription = Description.createSuiteDescription(testClass.getName());
         this.testClass = testClass;
         for (Method m : testClass.getMethods()) {
-            EfficiencyTest testParameter = m.getAnnotation(EfficiencyTest.class);
+            PerformanceTest testParameter = m.getAnnotation(PerformanceTest.class);
             Ignore ignore = m.getAnnotation(Ignore.class);
             if (testParameter != null) {
                 TestInfo testInfo = new TestInfo();

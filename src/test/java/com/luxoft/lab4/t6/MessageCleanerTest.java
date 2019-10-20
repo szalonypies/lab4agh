@@ -1,7 +1,7 @@
 package com.luxoft.lab4.t6;
 
-import com.luxoft.lab4.experimental.EfficiencyTest;
-import com.luxoft.lab4.experimental.MemEfficiencyRunner;
+import com.luxoft.lab4.experimental.PerformanceTest;
+import com.luxoft.lab4.experimental.PerformanceTestRunner;
 import com.luxoft.lab4.utils.EfficiencyTestUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,12 +12,12 @@ import java.util.Random;
  * Created by aniamamam on 2014-04-23.
  */
 
-@RunWith(MemEfficiencyRunner.class)
+@RunWith(PerformanceTestRunner.class)
 public class MessageCleanerTest extends EfficiencyTestUtil {
     private static Random random = new Random(123456L);
 
     /** Why does this code execute so slow? */
-    @EfficiencyTest(runningTimeLimit = 1000)
+    @PerformanceTest(runningTimeLimit = 1000)
     @Test
     public void testRunningTimeEasy() throws Exception {
         createIntegersAndPutThemInStore(100_000);
@@ -25,28 +25,28 @@ public class MessageCleanerTest extends EfficiencyTestUtil {
 
     /** Why the code requires more than 56M to run? How can we get lower on memory consumption?
      * Which list uses more memory than others? */
-    @EfficiencyTest(heapMaxMb = 56)
+    @PerformanceTest(heapMaxMb = 56)
     @Test
     public void testMemEfficiencyEasy() throws Exception {
         createIntegersAndPutThemInStore(1_000_000);
     }
 
     /** Why the code requires more than 32M to run? How can we get lower on memory consumption? */
-    @EfficiencyTest(heapMaxMb = 32)
+    @PerformanceTest(heapMaxMb = 32)
     @Test
     public void testMemEfficiencyIntermediate() throws Exception {
         createIntegersAndPutThemInStore(1_000_000);
     }
 
     /** Why the code requires more than 29M to run? To get so low we can go with Java's best suited collection */
-    @EfficiencyTest(heapMaxMb = 29)
+    @PerformanceTest(heapMaxMb = 29)
     @Test
     public void testMemEfficiencyExpert() throws Exception {
         createIntegersAndPutThemInStore(1_000_000);
     }
 
     /** To go as low as 12M we need to craft a custom solution (we have already written it before) */
-    @EfficiencyTest(heapMaxMb = 12)
+    @PerformanceTest(heapMaxMb = 12)
     @Test
     public void testMemEfficiencyMaster() throws Exception {
         createIntegersAndPutThemInStore(1_000_000);

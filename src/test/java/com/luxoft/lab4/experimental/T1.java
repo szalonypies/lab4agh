@@ -8,9 +8,9 @@ import java.util.ArrayList;
 /**
  * Created by aniamamam on 2014-04-25.
  */
-@RunWith(MemEfficiencyRunner.class)
+@RunWith(PerformanceTestRunner.class)
 public class T1 {
-    @EfficiencyTest(heapMaxMb = 10)
+    @PerformanceTest(heapMaxMb = 10)
     @Test
     public void test1() throws Exception {
         ArrayList<Integer> lst = new ArrayList<>();
@@ -21,7 +21,7 @@ public class T1 {
         Thread.sleep(3000);
     }
 
-    @EfficiencyTest(heapMaxMb = 10)
+    @PerformanceTest(heapMaxMb = 10)
     @Test
     public void test2() throws Exception {
         System.err.println("Running test 2");
