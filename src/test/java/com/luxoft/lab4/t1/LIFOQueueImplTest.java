@@ -1,5 +1,6 @@
 package com.luxoft.lab4.t1;
 
+import com.luxoft.lab4.experimental.PerformanceTest;
 import com.luxoft.lab4.experimental.PerformanceTestRunner;
 import com.luxoft.lab4.utils.EfficiencyTestUtil;
 import org.junit.Test;
@@ -11,14 +12,10 @@ import static org.junit.Assert.assertEquals;
  * TODO Please implement the LIFOQueueImpl using any java collection as a composite, for good time efficiency.
  */
 @RunWith(PerformanceTestRunner.class)
-public class LIFOQueueImplTest extends EfficiencyTestUtil {
+public class LIFOQueueImplTest {
 
-    @Test
+    @PerformanceTest(runningTimeLimit = 1000)
     public void runEfficiencyTest() throws Exception {
-        runTestTimeConstraint(1000);
-    }
-
-    public static void main(String[] args) {
         LIFOQueue<Integer> lifo = new LIFOQueueImpl<>();
         for (int i=0; i<1000000; i++) {
             lifo.put(i);
@@ -28,4 +25,5 @@ public class LIFOQueueImplTest extends EfficiencyTestUtil {
         }
         assertEquals(null, lifo.peek());
     }
+
 }

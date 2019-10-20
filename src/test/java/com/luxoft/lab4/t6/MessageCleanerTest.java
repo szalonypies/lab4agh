@@ -2,7 +2,6 @@ package com.luxoft.lab4.t6;
 
 import com.luxoft.lab4.experimental.PerformanceTest;
 import com.luxoft.lab4.experimental.PerformanceTestRunner;
-import com.luxoft.lab4.utils.EfficiencyTestUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -13,7 +12,7 @@ import java.util.Random;
  */
 
 @RunWith(PerformanceTestRunner.class)
-public class MessageCleanerTest extends EfficiencyTestUtil {
+public class MessageCleanerTest {
     private static Random random = new Random(123456L);
 
     /** Why does this code execute so slow? */
@@ -52,15 +51,6 @@ public class MessageCleanerTest extends EfficiencyTestUtil {
         createIntegersAndPutThemInStore(1_000_000);
     }
 
-    private void expectMaxTimeWithNumberOfMessages(int timeInMsec, int numberOfMessages) throws Exception {
-        runTestTimeConstraint(timeInMsec, String.valueOf(numberOfMessages));
-    }
-
-    private void expectMaxMemoryWithNumberOfMessages(int memory, int numberOfMessages) throws Exception {
-        runTestMemConstraint(memory, String.valueOf(numberOfMessages));
-    }
-
-
     private void createIntegersAndPutThemInStore(int howManyIntegers) {
         int[] testIntegers = createTestIntegers(howManyIntegers);
 
@@ -72,7 +62,7 @@ public class MessageCleanerTest extends EfficiencyTestUtil {
 
         MessageCleaner cleaner = new MessageCleaner();
         cleaner.setMessageIds(messageIds);
-        cleaner.setMessageDbStore(new TestDbStore(testIntegers));
+        cleaner.setMessageDbStore(new MockedDbStore(testIntegers));
         cleaner.cleanup();
 
     }
@@ -86,11 +76,11 @@ public class MessageCleanerTest extends EfficiencyTestUtil {
         return integers;
     }
 
-    private static class TestDbStore implements MessageDbStore {
+    private static class MockedDbStore implements MessageDbStore {
         private final int[] testIntegers;
         private int pos = 0;
 
-        TestDbStore(int[] testIntegers) {
+        MockedDbStore(int[] testIntegers) {
             this.testIntegers = testIntegers;
         }
 
