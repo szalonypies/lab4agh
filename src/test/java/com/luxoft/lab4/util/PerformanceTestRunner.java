@@ -131,7 +131,6 @@ public class PerformanceTestRunner extends Runner implements Filterable {
                 .redirectErrorStream(true)
                 .redirectOutput(ProcessBuilder.Redirect.INHERIT)
                 .start();
-        System.err.println("waiting for");
         try {
             final int result;
             if (testInfo.et.runningTimeLimit() == 0) {
