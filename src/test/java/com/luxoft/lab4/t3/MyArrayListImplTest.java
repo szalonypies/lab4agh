@@ -20,6 +20,7 @@ public class MyArrayListImplTest {
         for (int i=0; i<10; i++) {
             assertEquals(Integer.valueOf(30 - i), list.get(i));
         }
+        assertEquals(10, list.size());
     }
 
     /** List must not grow above size given in constructor.

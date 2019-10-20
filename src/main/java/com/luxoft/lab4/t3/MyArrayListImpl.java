@@ -10,7 +10,7 @@ public class MyArrayListImpl<T> extends AbstractList<T> implements MyArrayList<T
     /* TODO   please implement
        TODO      1. not growing
        TODO      2. java's array based
-       TODO   list that will allow get(idx) and add() up to the size initialized with 'size' constructor parameter.
+       TODO   list that will allow get(idx) and add(element) up to the size initialized with 'size' constructor parameter.
      */
     public MyArrayListImpl(int size) {
 
