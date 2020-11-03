@@ -1,7 +1,7 @@
 src = $(wildcard *.svg)
 obj = $(src:.svg=.pdf)
 
-main.pdf: $(obj)
+main.pdf: $(obj) main.tex
 	pdflatex main.tex
 
 %.pdf: %.svg

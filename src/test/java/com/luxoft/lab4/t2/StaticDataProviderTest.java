@@ -13,7 +13,6 @@ import static org.junit.Assert.assertEquals;
  */
 public class StaticDataProviderTest {
 
-
     private ExchangeRateCalculator calculator;
 
     /** TODO right click on the test and select 'run test' **/

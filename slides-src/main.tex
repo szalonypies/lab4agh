@@ -15,13 +15,49 @@
 }
 
 \usepackage[T1]{fontenc}
+% For better handling of unicode (Latin characters, anyway)
+\IfFileExists{lmodern.sty}{\usepackage{lmodern}}{}
+
 \usepackage{hyperref}
 \usepackage{color}
 \usepackage[english]{babel}
 \usepackage[utf8x]{inputenc}
 \usepackage{centernot}
 \usepackage{verbatim}
+\usepackage{listings}
 %\usepackage[final]{pdfpages}
+
+\makeatletter
+%lmtt \def\lmtt@use@light@as@normal{}
+%\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+numbers=none,                   % where to put the line-numbers
+%numberstyle=\small \ttfamily \color[rgb]{0.4,0.4,0.4},
+% style used for the linenumbers
+showspaces=false,               % show spaces adding special underscores
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+frame=lines,                    % add a frame around the code
+tabsize=2,                        % default tabsize: 4 spaces
+breaklines=true,                % automatic line breaking
+breakatwhitespace=false,        % automatic breaks should only happen at whitespace
+basicstyle=\fontencoding{T1}\footnotesize\fontfamily{lmtt}\fontseries{m}\selectfont,
+%identifierstyle=\color[rgb]{0.3,0.133,0.133},   % colors in variables and function names, if desired.
+keywordstyle=\color[rgb]{0.133,0.133,0.6},
+commentstyle=\color[rgb]{0.133,0.545,0.133},
+stringstyle=\color[rgb]{0.627,0.126,0.941},
+}
+
+\lstdefinestyle{srcnormal}{
+%backgroundcolor=\color{backcolour},
+basicstyle=\fontencoding{T1}\footnotesize\fontfamily{lmtt}\fontseries{c}\selectfont,
+keepspaces=true,
+}
+\lstdefinestyle{srcnarrow}{
+basicstyle=\fontencoding{T1}\footnotesize\fontfamily{lmtt}\fontseries{m}\selectfont,
+keepspaces=true,
+}
 
 \hypersetup{
   colorlinks, linkcolor=blue
@@ -29,9 +65,9 @@
 
 \title[Java lists, maps and not only]{Java lists, maps and not only\ldots}
 \author{Paweł Jaworski}
-\institute{Luxoft Poland Sp. z o.o.}
+\institute{Luxoft/Akademia Górniczo Hutnicza}
 %\date{2014-06-09}
-\date{2019-10-22}
+\date{2020-11-10}
 
 \begin{document}
 
@@ -43,7 +79,7 @@
   \tableofcontents
 \end{frame}
 
-\section{Lists}
+\section{Hello}
 
 \begin{frame}{Introduction}
 
@@ -268,6 +304,46 @@ Operation & Account state \\\hline
 
 \end{frame}
 
+\subsection{Generics}
+\lstset{style=srcnarrow}
+\begin{frame}[fragile]{Generics and wildcards}
+    \lstinputlisting[language=Java]{"sourcecode/generics1.java"}
+\end{frame}
+
+\begin{frame}[fragile]{Generics and wildcards}
+    \lstinputlisting[language=Java]{"sourcecode/generics1a.java"}
+\end{frame}
+
+\begin{frame}[fragile]{Generics and wildcards}
+    \lstinputlisting[language=Java]{"sourcecode/generics2.java"}
+\end{frame}
+
+\begin{frame}[fragile]{Generics and wildcards}
+    \lstinputlisting[language=Java]{"sourcecode/generics2a.java"}
+\end{frame}
+
+\begin{frame}[fragile]{Generics and wildcards}
+    \lstinputlisting[language=Java]{"sourcecode/generics3.java"}
+\end{frame}
+
+
+\begin{frame}{Type erasure}
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=1.00\textwidth]{type_erasure.png}
+        \caption{Type erasure}
+        \label{fig:type-erasure}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Type erasure}
+    \begin{itemize}
+        \item Replace unbound type E with Object
+        \item Add typecasting to all method calls
+        \item Object has no information of type it was created with\footnote{except for class that inherits type-specified generic}
+        \item \texttt{ClassCastException} will be called if contraints are violated
+    \end{itemize}
+\end{frame}
 
 \subsection{LinkedList}
 
@@ -307,44 +383,42 @@ Operation & Account state \\\hline
     \end{figure}
 \end{frame}
 
+\lstset{style=srcnormal}
 \begin{frame}[fragile]{How much do the object weight in Java}
-    \begin{verbatim}
-class A \{ \} \\
-\ \\
-class B extends A \{ \} \\
-\ \\
-class C \{ \\
-\ \ \ \ boolean a; \\
-\}
-    \end{verbatim}
+    \lstinputlisting[language=Java]{"sourcecode/objectweight.java"}
 \end{frame}
 
 \begin{frame}[fragile]{How much do the object weight in Java - compressed pointers}
 \textit{java -XX:+UseCompressedOops}
     \begin{verbatim}
-sizeof A = 16 \\
-sizeof B = 16 \\
-sizeof C = 16 \\
-sizeof Boolean = 16 \\
-sizeof Char = 16 \\
-sizeof Integer = 16 \\
-sizeof Long = 24 \\
-sizeof class java.util.LinkedList\$Node = 24 \\
+sizeof A = 16
+sizeof B = 16
+sizeof C = 16
+sizeof Boolean = 16
+sizeof Char = 16
+sizeof Integer = 16
+sizeof Long = 24
+sizeof class java.util.LinkedList\$Node = 24
     \end{verbatim}
 \end{frame}
 
 \begin{frame}[fragile]{How much do the object weight in Java - \textit{not} compressed pointers}
 \textit{java -XX:-UseCompressedOops}
 \begin{verbatim}
-sizeof A = 16 \\
-sizeof B = 16 \\
-sizeof C = 24 \\
-sizeof Boolean = 24 \\
-sizeof Char = 24 \\
-sizeof Integer = 24 \\
-sizeof Long = 24 \\
-sizeof class java.util.LinkedList\$Node = 40 \\
+sizeof A = 16
+sizeof B = 16
+sizeof C = 24
+sizeof Boolean = 24
+sizeof Char = 24
+sizeof Integer = 24
+sizeof Long = 24
+sizeof class java.util.LinkedList\$Node = 40
 \end{verbatim}
+\end{frame}
+
+\lstset{style=srcnormal}
+\begin{frame}[fragile]{How much do the object weight in Java}
+    \lstinputlisting[language=Java]{"sourcecode/objectweight2.java"}
 \end{frame}
 
 \section{Maps}
@@ -397,6 +471,17 @@ sizeof class java.util.LinkedList\$Node = 40 \\
 \end{frame}
 
 \section{Excercises}
+\subsection{Test Driven Development (TDD)}
+\begin{frame}{How to write tests}
+    \begin{itemize}
+        \item Create test that checks constraint on empty or broken code
+        \item Run the test to confirm that it fails (if it passes, the checks are incorrect)
+        \item During the test compilation it might be needed to create more empty methods - this is the Development part in TDD
+        \item Fix the code and fill the empty methods
+        \item Tests should pass
+    \end{itemize}
+\end{frame}
+
 \subsection{Laboratory excercises descriptions}
 
 
@@ -466,44 +551,44 @@ sizeof class java.util.LinkedList\$Node = 40 \\
 
 \section{Summary}
 \subsection{What have we learned today?}
-\begin{frame}{HashMap}
+
+\begin{frame}[c]{ }
+    \centering
+    Summary
+\end{frame}
+
+\begin{frame}{Test Driven Development}
 
     \begin{itemize}
-        \item Test Driven Development.
-        \begin{itemize}
-            \item Always start with test \pause
-            \item Test must fail \pause
-            \item Make the test passing by fixing the code \pause
-        \end{itemize}
-        \item Fast putting a key-value pair (further referred to as: \textbf{insert}): $(O(1)$, pessimitically $n=\textrm{size}$, when map needs to grow.
-        \item Fast remove: $O(1)$ (HashMap does not shrink).
-        \item Values with the same hash stored in $LinkedList$, collisions may occur.
+        \item Always start with test \pause
+        \item Test must fail \pause
+        \item Make the test passing by fixing the code \pause
     \end{itemize}
 \end{frame}
 
+\begin{frame}{Complexity as a gift from Java}
 
-% \subsection{Mathematics}
+    \begin{itemize}
+        \item Big $O$ notation, small $o$ notation, theta $\theta$ notation \pause
+        \item Java's \textit{sophisticated} collections give us access to best algorithm implementation \pause
+        \item Even though, using incorrect implementation, we can break things up \pause
+        \item Even though, sometimes we may need to have our own implementation (read: \textbf{use libraries})
+    \end{itemize}
+\end{frame}
 
-% \begin{frame}{Readable Mathematics}
+\begin{frame}{Generics}
 
-% % Commands to include a figure:
-% %\begin{figure}
-% %\includegraphics[width=\textwidth]{your-figure's-file-name}
-% %\caption{\label{fig:your-figure}Caption goes here.}
-% %\end{figure}
+    \begin{itemize}
+        \item One code for many usages
+        \item \texttt{? extends} and \texttt{? super}
+        \item Type erasure will clear typed info
+    \end{itemize}
+\end{frame}
 
-% \begin{table}
-% \centering
-% \begin{tabular}{l|r}
-% Item & Quantity \\\hline
-% Widgets & 42 \\
-% Gadgets & 13
-% \end{tabular}
-% \caption{\label{tab:widgets}An example table.}
-% \end{table}
-
-% \end{frame}
-
+\begin{frame}[c]{ }
+    \centering
+    Thank you
+\end{frame}
 
 
 \end{document}
