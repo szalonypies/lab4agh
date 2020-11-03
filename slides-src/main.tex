@@ -12,8 +12,9 @@
   \usefonttheme{default}  % or try serif, structurebold, ...
   \setbeamertemplate{navigation symbols}{}
   \setbeamertemplate{caption}[numbered]
-} 
+}
 
+\usepackage[T1]{fontenc}
 \usepackage{hyperref}
 \usepackage{color}
 \usepackage[english]{babel}
@@ -47,19 +48,23 @@
 \begin{frame}{Introduction}
 
 \begin{itemize}
-  \item We're going to have some fun with lists and maps
-  \item Lists and maps are \textbf{basic} data structures, and in this context ``Basic'' means \textit{being a base of everything else} 
+  \item Java collections are sophisticated implementations of algorithms for storing data (see also Cormen's ``Introduction to algorithms'')
+  \item All collections implement iteration
+  \item Lists are implemented as sequential collections backed by arrays and linked lists
+  \item Sets, besides iteration, are also allowing checking if the item is present.
+  \item Maps are associative containers which allow quick access by object-key (any object, also other than integer).
+  \item Trees are underlying some implementations of Maps and Sets
+  \item Lists maintain item order while it is not guaranteed in Sets and Maps.
 \end{itemize}
 
 \end{frame}
-
 
 \begin{frame}{The plan}
     \begin{figure}[htbp]
     \centering
         \includegraphics[width=1.00\textwidth]{lab-plan.pdf}
     \caption{Title}
-    \label{fig:x2_vs_x}
+    \label{fig:lab-plan}
     \end{figure}
 
 \end{frame}
@@ -186,7 +191,7 @@ Having that in mind, we can select, for example, \textbf{heapsort}, which has wo
 
 \begin{itemize}
 \item Quick \textbf{append} - a special-case of the insert at the last place, i.e. when for $n$ equal number of elements: $\Theta(1)$, but only when the underlying array size is $N>n+1$
-\item When ArrayList is full, to perform insert we need to expand underlying array. We do it by increasing size by twice the current size. 
+\item When ArrayList is full, to perform insert we need to expand underlying array. We do it by increasing size by twice the current size.
 \item Is really the \textbf{append} operation $\Theta(1)$???
 
 \end{itemize}
@@ -200,7 +205,7 @@ Having that in mind, we can select, for example, \textbf{heapsort}, which has wo
     \begin{figure}[htbp]
     \centering
         \includegraphics[width=1\textwidth]{insert-list.pdf}
-    \label{fig:x2_vs_x}
+    \label{fig:insert-list}
     \end{figure}
 \end{frame}
 
@@ -220,7 +225,7 @@ $$T(n)=\sum_{x=0}^{n}f(x)$$
 \begin{itemize}
 \item For array initialised to 2, in the \textbf{append} operation we have cost:
 $$1,1,n_1=2,1,1,n_2=4,1,1,1,1,n_3=8$$
-where $n_x$ is n-th resize cost equals array's size at the moment of resize. 
+where $n_x$ is n-th resize cost equals array's size at the moment of resize.
 \item If we use an accounting method to tell that every operation, we put additional 2 operations' time on a special account, for a later use, we can reuse that time at critical sections of resizing. Our account state is then:
 \end{itemize}
 
@@ -302,7 +307,7 @@ Operation & Account state \\\hline
     \end{figure}
 \end{frame}
 
-\begin{frame}{How much do the object weight in Java}
+\begin{frame}[fragile]{How much do the object weight in Java}
     \begin{verbatim}
 class A \{ \} \\
 \ \\
@@ -310,11 +315,11 @@ class B extends A \{ \} \\
 \ \\
 class C \{ \\
 \ \ \ \ boolean a; \\
-\} 
+\}
     \end{verbatim}
 \end{frame}
 
-\begin{frame}{How much do the object weight in Java - compressed pointers}
+\begin{frame}[fragile]{How much do the object weight in Java - compressed pointers}
 \textit{java -XX:+UseCompressedOops}
     \begin{verbatim}
 sizeof A = 16 \\
@@ -328,7 +333,7 @@ sizeof class java.util.LinkedList\$Node = 24 \\
     \end{verbatim}
 \end{frame}
 
-\begin{frame}{How much do the object weight in Java - \textit{not} compressed pointers}
+\begin{frame}[fragile]{How much do the object weight in Java - \textit{not} compressed pointers}
 \textit{java -XX:-UseCompressedOops}
 \begin{verbatim}
 sizeof A = 16 \\
@@ -357,7 +362,7 @@ sizeof class java.util.LinkedList\$Node = 40 \\
 \begin{frame}{HashMap}
 
 \begin{center}x.equals(y) $\Longrightarrow$ x.hashCode() == y.hashCode()\end{center}
-\begin{center}x.hashCode() == y.hashCode()  $\centernot\Longrightarrow$ x.equals(y)\end{center} 
+\begin{center}x.hashCode() == y.hashCode()  $\centernot\Longrightarrow$ x.equals(y)\end{center}
 \end{frame}
 
 
@@ -380,7 +385,7 @@ sizeof class java.util.LinkedList\$Node = 40 \\
     \centering
         \includegraphics[width=1.00\textwidth]{lab-red-black-tree.pdf}
     \caption{Title}
-    \label{fig:x2_vs_x}
+    \label{fig:lab_red_black_tree}
     \end{figure}
 
 \end{frame}
@@ -446,7 +451,7 @@ sizeof class java.util.LinkedList\$Node = 40 \\
     \begin{figure}[htbp]
     \centering
         \includegraphics[width=0.9\textwidth]{t5-uml.pdf}
-    \label{fig:x2_vs_x}
+    \label{fig:t5-uml}
     \end{figure}
 \end{frame}
 
@@ -457,6 +462,23 @@ sizeof class java.util.LinkedList\$Node = 40 \\
     \item \texttt{testRunningTimeEasy} - focus on time of execution, why it is so slow
     \item \texttt{testMemEfficiencyEasy} - focus on time of execution, why it is so slow
 \end{itemize}
+\end{frame}
+
+\section{Summary}
+\subsection{What have we learned today?}
+\begin{frame}{HashMap}
+
+    \begin{itemize}
+        \item Test Driven Development.
+        \begin{itemize}
+            \item Always start with test \pause
+            \item Test must fail \pause
+            \item Make the test passing by fixing the code \pause
+        \end{itemize}
+        \item Fast putting a key-value pair (further referred to as: \textbf{insert}): $(O(1)$, pessimitically $n=\textrm{size}$, when map needs to grow.
+        \item Fast remove: $O(1)$ (HashMap does not shrink).
+        \item Values with the same hash stored in $LinkedList$, collisions may occur.
+    \end{itemize}
 \end{frame}
 
 
