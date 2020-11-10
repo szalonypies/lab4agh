@@ -500,15 +500,25 @@ sizeof class java.util.LinkedList\$Node = 40
 \subsection{Laboratory excercises descriptions}
 
 
-\begin{frame}{Excercise 1}
+\begin{frame}[fragile]{Excercise 1}
 
 \begin{itemize}
 	\item Open the project, and enter the t1 package
     \item in \texttt{src/\textit{main}/java/t1} we have code that we need to fix
-    \item in \texttt{src/\textit{test}/java/t1} we have tests that need to pass
-    \item Please implement FIFOQueue using appropriate Java's list implementation
-    \item Please implement LIFOQueue using appropriate Java's list implementation
-    \item What happens when we change the selected implementation of list to another? Does the test still pass? What is the difference
+    \item in \texttt{src/\textit{test}/java/t1} we have tests. \pause
+    \item FIFO queue is First-In-First-Out. Whatever is put first, should come out first. \pause
+    \begin{enumerate}
+        \item Run \texttt{FIFOQueueImplTest} - it fails.\pause
+        \item Implement FIFOQueue using appropriate Java's list implementation.\pause
+        \item Run \texttt{FIFOQueueImplTest} - it should pass. How long does it run?\pause
+    \end{enumerate}
+    \item LIFO queue is Last-In-First-Out. It's a stack (first came, last will come out).\pause
+    \begin{enumerate}
+        \item Run \texttt{LIFOQueueImplTest} - it fails.\pause
+        \item Please implement LIFOQueue using appropriate Java's list implementation\pause
+        \item Run \texttt{LIFOQueueImplTest} - it should pass. How long does it run?\pause
+    \end{enumerate}
+    \item Run the efficiency test \texttt{PerformanceTestsForT1} - all should pass. If not, it means wrong type of list has been used.
 \end{itemize}
 \end{frame}
 
