@@ -60,7 +60,7 @@ public class MessageCleanerTest {
     private void createIntegersAndPutThemInStore(int howManyIntegers) {
         int[] testIntegers = createTestIntegers(howManyIntegers);
 
-        MessagesIds messageIds = new MessageIdsListImpl(howManyIntegers);
+        MessagesIds messageIds = new MessageIdsListImpl();
 
         for (int i : testIntegers) {
             messageIds.addId(i);
