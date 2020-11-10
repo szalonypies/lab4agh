@@ -16,10 +16,10 @@ public class MessageCleanerTest {
     private static Random random = new Random(123456L);
 
     /** Why does this code execute so slow? */
-    @PerformanceTest(runningTimeLimit = 1000)
+    @PerformanceTest(runningTimeLimit = 100)
     @Test
     public void testRunningTimeEasy() throws Exception {
-        createIntegersAndPutThemInStore(100_000);
+        createIntegersAndPutThemInStore(1_000_000);
     }
 
     /** Why the code requires more than 56M to run? How can we get lower on memory consumption?

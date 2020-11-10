@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 public class PerformanceTestsForT1 {
 
     /** if the performance test does not pass, you might have chosen incorrect collection */
-    @PerformanceTest(runningTimeLimit = 1000)
+    @PerformanceTest(runningTimeLimit = 50)
     public void fifoQueueTimeTest() throws Exception {
         FIFOQueue<Integer> fifo = new FIFOQueueImpl<>();
         for (int i=0; i<1000000; i++) {

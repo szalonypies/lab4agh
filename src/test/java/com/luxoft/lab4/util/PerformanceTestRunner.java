@@ -14,6 +14,7 @@ import org.junit.runner.notification.RunNotifier;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
@@ -36,6 +37,33 @@ public class PerformanceTestRunner extends Runner implements Filterable {
     }
 
     List<TestInfo> testParameters = new ArrayList<>();
+
+    private static long createBenchmarkTime() {
+        long benchmarkTime = Long.MAX_VALUE;
+        int[] items = new int[1000];
+        Random rnd = new Random(1337L);
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < 100; i++) {
+            doBenchmarkOperations(items, rnd);
+        }
+        long elapsed = System.currentTimeMillis() - start;
+        if (elapsed < benchmarkTime) {
+            benchmarkTime = elapsed;
+        }
+        System.err.println("Benchmark time = " + benchmarkTime);
+        return benchmarkTime;
+    }
+
+    private static void doBenchmarkOperations(int[] items, Random rnd) {
+        List<Integer> lst = new ArrayList<>();
+        for (int i = 0; i < 1000; i++) {
+            lst.add(rnd.nextInt());
+        }
+        int j = 0;
+        for (Integer i : lst) {
+            items[j++] = i;
+        }
+    }
 
     public PerformanceTestRunner(Class<?> testClass) {
         super();
@@ -69,6 +97,7 @@ public class PerformanceTestRunner extends Runner implements Filterable {
     }
 
     int count = 0;
+
     @Override
     public Description getDescription() {
 
@@ -87,6 +116,7 @@ public class PerformanceTestRunner extends Runner implements Filterable {
 
     @Override
     public void run(RunNotifier notifier) {
+        long benchmarkTime = createBenchmarkTime();
         notifier.fireTestRunStarted(testSuiteDescription);
 
         Result result = new Result();
@@ -96,7 +126,7 @@ public class PerformanceTestRunner extends Runner implements Filterable {
             try {
                 System.err.println("Running test for method " + description.getMethodName());
                 notifier.fireTestStarted(description);
-                runJUnit(testParameters.get(i), description.getMethodName());
+                runJUnit(testParameters.get(i), description.getMethodName(), benchmarkTime);
                 System.err.println("Finished test for method " + description.getMethodName());
                 if (testParameters.get(i).ignore) {
                     notifier.fireTestIgnored(description);
@@ -119,7 +149,7 @@ public class PerformanceTestRunner extends Runner implements Filterable {
         notifier.fireTestRunFinished(result);
     }
 
-    private void runJUnit(TestInfo testInfo, String methodName) throws Exception {
+    private void runJUnit(TestInfo testInfo, String methodName, long benchmarkTime) throws Exception {
         String cp = System.getProperty("java.class.path");
         System.err.println(cp);
         String memParam = "";
@@ -131,19 +161,26 @@ public class PerformanceTestRunner extends Runner implements Filterable {
                 .redirectErrorStream(true)
                 .redirectOutput(ProcessBuilder.Redirect.INHERIT)
                 .start();
+        final long runningTimeLimit = testInfo.et.runningTimeLimit() * benchmarkTime;
+        final long start = System.currentTimeMillis();
         try {
             final int result;
-            if (testInfo.et.runningTimeLimit() == 0) {
+            if (runningTimeLimit == 0) {
                 result = p.waitFor();
             } else {
-                result = waitFor(p, testInfo.et.runningTimeLimit(), TimeUnit.MILLISECONDS);
+                result = waitFor(p, runningTimeLimit, TimeUnit.MILLISECONDS);
+                long elapsed = System.currentTimeMillis() - start;
+                System.out.println("Test finished in " + elapsed + " (" + (elapsed / benchmarkTime)
+                        + " benchmark units). Limit = " + runningTimeLimit + " (" + testInfo.et.runningTimeLimit()
+                        + " benchmark units)");
             }
             if (result != 0) {
                 throw new AssertionError("Test returned non-zero value.");
             }
         } catch (TimeoutException e) {
             p.destroy();
-            throw new AssertionError("Test didn't finish in given time (" + testInfo.et.runningTimeLimit() + "ms).");
+            long elapsed = System.currentTimeMillis() - start;
+            throw new AssertionError("Test didn't finish in given time (time = " + elapsed + " limit = " + runningTimeLimit + "ms).");
 
         }
     }
